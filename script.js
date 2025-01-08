@@ -7,13 +7,26 @@ const addThreeBtns = document.querySelectorAll('.btnAddThree');
 const minusOneBtns = document.querySelectorAll('.btnMinusOne');
 const resetBtn = document.querySelector('.resetBtn');
 const scores = document.querySelectorAll('.score');
+const timeElement = document.querySelector('.time');
+let minutes = 10;
+let seconds = 0;
 
 // Functions
+
+// Update score
 const updateScore = (team, points) => {
   const scoreElement = document.getElementById(`score${team}`);
   let currentScore = parseInt(scoreElement.textContent);
   currentScore += points;
   scoreElement.textContent = currentScore;
+};
+
+// Update time
+const updateTimeDisplay = () => {
+  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`;
+  timeElement.textContent = formattedTime;
 };
 
 // Add event listeners
