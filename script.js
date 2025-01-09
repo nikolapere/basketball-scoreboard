@@ -10,6 +10,7 @@ const scores = document.querySelectorAll('.score');
 const timeElement = document.querySelector('.time');
 let minutes = 10;
 let seconds = 0;
+const startBtn = document.querySelector('.startTime');
 
 // Functions
 
@@ -21,12 +22,33 @@ const updateScore = (team, points) => {
   scoreElement.textContent = currentScore;
 };
 
-// Update time
+// Update time display
 const updateTimeDisplay = () => {
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(
     seconds
   ).padStart(2, '0')}`;
   timeElement.textContent = formattedTime;
+};
+
+// Timer
+const startTime = () => {
+  const intervalId = setInterval(function () {
+    if (seconds === 0) {
+      if (minutes === 0) {
+        clearInterval(intervalId);
+        console.log('Timer finished');
+      } else {
+        minutes--;
+        seconds = 59;
+      }
+    } else {
+      seconds--;
+    }
+
+    updateTimeDisplay();
+  }, 1000);
+
+  return intervalId;
 };
 
 // Add event listeners
@@ -60,3 +82,11 @@ scores.forEach(score => {
     score.textContent = 0;
   });
 });
+
+// Event listener for the start button
+startBtn.addEventListener('click', function () {
+  startTime();
+});
+
+// Initial setup
+updateTimeDisplay();
