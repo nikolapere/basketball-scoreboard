@@ -10,8 +10,11 @@ const scores = document.querySelectorAll('.score');
 const timeElement = document.querySelector('.time');
 let minutes = 10;
 let seconds = 0;
+let intervalId;
 const startBtn = document.querySelector('.startTime');
-
+const stopBtn = document.querySelector('.stopTime');
+const nextPeriodBtn = document.querySelector('.btnNextPeriod');
+const currentPeriod = document.querySelector('.currentPeriod');
 // Functions
 
 // Update score
@@ -31,8 +34,10 @@ const updateTimeDisplay = () => {
 };
 
 // Timer
+
+// Start time
 const startTime = () => {
-  const intervalId = setInterval(function () {
+  intervalId = setInterval(function () {
     if (seconds === 0) {
       if (minutes === 0) {
         clearInterval(intervalId);
@@ -50,6 +55,11 @@ const startTime = () => {
 
   return intervalId;
 };
+
+// Stop time
+stopBtn.addEventListener('click', function () {
+  clearInterval(intervalId);
+});
 
 // Add event listeners
 addOneBtns.forEach((btn, index) => {
@@ -77,12 +87,6 @@ minusOneBtns.forEach((btn, index) => {
   });
 });
 
-scores.forEach(score => {
-  resetBtn.addEventListener('click', function () {
-    score.textContent = 0;
-  });
-});
-
 // Event listener for the start button
 startBtn.addEventListener('click', function () {
   startTime();
@@ -90,3 +94,26 @@ startBtn.addEventListener('click', function () {
 
 // Initial setup
 updateTimeDisplay();
+
+// Change game period
+nextPeriodBtn.addEventListener('click', function () {
+  const current = parseInt(currentPeriod.textContent);
+  if (current <= 3) {
+    currentPeriod.textContent = current + 1;
+  } else {
+    currentPeriod.textContent = 'Extra time';
+  }
+});
+
+// Reset
+scores.forEach(score => {
+  resetBtn.addEventListener('click', function () {
+    score.textContent = 0;
+    currentPeriod.textContent = 1;
+    clearInterval(intervalId);
+    intervalId = 10;
+    minutes = 10;
+    seconds = 0;
+    updateTimeDisplay();
+  });
+});
